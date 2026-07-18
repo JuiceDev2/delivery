@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { crearClienteSupabase } from "@/lib/supabase/client";
@@ -37,7 +39,7 @@ export default function CatalogoPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-10 pb-28">
-      <h1 className="text-xl font-semibold">Catálogo</h1>
+      <h1 className="font-display text-xl font-semibold text-agave-osc">Catálogo</h1>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
         {productos.map((p) => {
@@ -45,7 +47,7 @@ export default function CatalogoPage() {
           const puedeComprar = !cerrado || p.negocios?.acepta_pedidos_cerrado;
 
           return (
-            <div key={p.id} className="rounded-lg border border-neutral-200 p-3">
+            <div key={p.id} className="rounded-lg border border-piedra-osc/60 bg-white p-3 shadow-suave">
               {p.imagen_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -54,13 +56,13 @@ export default function CatalogoPage() {
                   className="h-28 w-full rounded-md object-cover"
                 />
               ) : (
-                <div className="h-28 w-full rounded-md bg-neutral-100" />
+                <div className="h-28 w-full rounded-md bg-piedra" />
               )}
               <p className="mt-2 text-sm font-medium">{p.nombre}</p>
-              <p className="text-xs text-neutral-500">{p.negocios?.nombre_negocio}</p>
+              <p className="text-xs text-musgo">{p.negocios?.nombre_negocio}</p>
 
               {cerrado && (
-                <p className="mt-1 text-xs font-medium text-red-600">
+                <p className="mt-1 text-xs font-medium text-barro-osc">
                   Cerrado
                   {p.negocios?.cerrado_hasta &&
                     ` hasta ${new Date(p.negocios.cerrado_hasta).toLocaleString("es-MX", {
@@ -72,7 +74,7 @@ export default function CatalogoPage() {
                 </p>
               )}
 
-              <p className="mt-1 text-sm font-semibold">${p.precio.toFixed(2)}</p>
+              <p className="mt-1 text-sm font-semibold text-barro">${p.precio.toFixed(2)}</p>
               <button
                 onClick={() =>
                   agregar({
@@ -83,7 +85,7 @@ export default function CatalogoPage() {
                   })
                 }
                 disabled={!puedeComprar}
-                className="mt-2 w-full rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
+                className="mt-2 w-full rounded-md bg-agave transition hover:bg-agave-osc px-3 py-1.5 text-xs font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {puedeComprar ? "Agregar" : "No disponible"}
               </button>
@@ -95,7 +97,7 @@ export default function CatalogoPage() {
       {lineas.length > 0 && (
         <Link
           href="/cliente/checkout"
-          className="fixed inset-x-6 bottom-6 flex items-center justify-between rounded-lg bg-neutral-900 px-5 py-4 text-white shadow-lg"
+          className="fixed inset-x-6 bottom-6 flex items-center justify-between rounded-lg bg-agave transition hover:bg-agave-osc px-5 py-4 text-white shadow-lg"
         >
           <span className="text-sm font-medium">{lineas.length} producto(s)</span>
           <span className="text-sm font-semibold">Ver carrito · ${total.toFixed(2)}</span>

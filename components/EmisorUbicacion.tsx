@@ -41,7 +41,7 @@ export default function EmisorUbicacion({ pedidoId }: Props) {
   return (
     <button
       onClick={activo ? detener : iniciar}
-      className="rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white"
+      className="rounded-lg bg-agave transition hover:bg-agave-osc px-4 py-2.5 text-sm font-medium text-white"
     >
       {activo ? "Detener envío de ubicación" : "Salir a entregar (compartir ubicación)"}
     </button>

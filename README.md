@@ -55,11 +55,23 @@
    el reset de contraseñas y el alta de vendedores desde el admin, nunca se expone al navegador.
 3. Si ya habías corrido `supabase/schema.sql` antes de la función de horario, corre también
    `supabase/migracion_horario.sql` para agregar las columnas nuevas a `negocios`.
+4. Si ya tenías el proyecto corriendo antes de esta actualización, corre también
+   `supabase/migracion_rls_items.sql`: agrega las políticas de Row Level Security que
+   faltaban en `pedido_items` y `ventas_caja_items` (esas tablas tenían RLS activado pero
+   sin ninguna política, lo que bloqueaba silenciosamente el checkout y la caja). Los
+   proyectos nuevos que corran `supabase/schema.sql` ya la incluyen.
+
+## Diseño
+
+La app usa una paleta de marca ("Zona Valles": verde agave, piedra/crema de fondo, musgo
+para texto secundario y terracota/barro como acento) definida en `tailwind.config.ts`, con
+tipografía Poppins para títulos e Inter para texto (`app/layout.tsx`, vía `next/font/google`).
+Cada sección (`/vendedor`, `/cliente`, `/admin`) tiene su propio layout con navegación y
+botón de cerrar sesión (`components/NavVendedor.tsx`, `NavCliente.tsx`, `NavAdmin.tsx`).
 
 ## Lo que falta por construir
 
-- Flujo de registro/alta del vendedor y su negocio (hoy se asume que ya existe la fila en
-  `negocios` — se puede armar un formulario similar al de `/registro`).
-- Vista de detalle de pedido para el cliente con `BarraSeguimiento.tsx` ya integrado
-  (el componente está listo, solo falta la página que lo monte con los datos del pedido).
 - Notificaciones (push o simplemente polling) cuando cambia el estado de un pedido.
+- Paginación/búsqueda en el catálogo cuando haya muchos productos.
+- Historial de pedidos entregados para el cliente (hoy solo se listan pedidos activos
+  en `/vendedor/pedidos`; no hay una vista de "mis pedidos anteriores" para el cliente).

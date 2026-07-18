@@ -61,34 +61,34 @@ export default function AdminDashboard() {
     }
   }
 
-  if (!metricas) return <main className="p-10 text-sm text-neutral-500">Cargando…</main>;
+  if (!metricas) return <main className="p-10 text-sm text-musgo">Cargando…</main>;
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Panel de administración</h1>
+        <h1 className="font-display text-xl font-semibold text-agave-osc">Resumen general</h1>
         <Link
           href="/admin/vendedores/nuevo"
-          className="rounded-lg bg-neutral-900 px-4 py-2 text-sm font-medium text-white"
+          className="rounded-lg bg-agave transition hover:bg-agave-osc px-4 py-2 text-sm font-medium text-white"
         >
           + Nuevo vendedor
         </Link>
       </div>
 
       <div className="mt-6 grid grid-cols-2 gap-4">
-        <div className="rounded-lg border border-neutral-200 p-4">
-          <p className="text-xs text-neutral-500">Pedidos totales</p>
+        <div className="rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
+          <p className="text-xs text-musgo">Pedidos totales</p>
           <p className="text-2xl font-semibold">{metricas.totalPedidos}</p>
         </div>
-        <div className="rounded-lg border border-neutral-200 p-4">
-          <p className="text-xs text-neutral-500">Pedidos con error</p>
-          <p className="text-2xl font-semibold text-red-600">{metricas.pedidosConError}</p>
+        <div className="rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
+          <p className="text-xs text-musgo">Pedidos con error</p>
+          <p className="text-2xl font-semibold text-barro-osc">{metricas.pedidosConError}</p>
         </div>
       </div>
 
       <section className="mt-8">
-        <h2 className="text-sm font-medium text-neutral-600">Ventas últimos 7 días</h2>
-        <div className="mt-2 h-56 rounded-lg border border-neutral-200 p-4">
+        <h2 className="text-sm font-medium text-musgo">Ventas últimos 7 días</h2>
+        <div className="mt-2 h-56 rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={metricas.ventasPorDia}>
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -102,8 +102,8 @@ export default function AdminDashboard() {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-sm font-medium text-neutral-600">Pedidos por estado</h2>
-        <div className="mt-2 h-56 rounded-lg border border-neutral-200 p-4">
+        <h2 className="text-sm font-medium text-musgo">Pedidos por estado</h2>
+        <div className="mt-2 h-56 rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={metricas.pedidosPorEstado}>
               <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
@@ -117,20 +117,20 @@ export default function AdminDashboard() {
       </section>
 
       <section className="mt-8">
-        <h2 className="text-sm font-medium text-neutral-600">Usuarios</h2>
+        <h2 className="text-sm font-medium text-musgo">Usuarios</h2>
         {mensaje && (
-          <p className="mt-2 rounded-md bg-neutral-100 px-3 py-2 text-sm">{mensaje}</p>
+          <p className="mt-2 rounded-md bg-piedra px-3 py-2 text-sm">{mensaje}</p>
         )}
-        <ul className="mt-2 divide-y divide-neutral-200 rounded-lg border border-neutral-200">
+        <ul className="mt-2 divide-y divide-piedra-osc/60 rounded-lg border border-piedra-osc/60 bg-white shadow-suave">
           {usuarios.map((u) => (
             <li key={u.id} className="flex items-center justify-between px-4 py-3">
               <div>
                 <p className="text-sm font-medium">{u.nombre_completo}</p>
-                <p className="text-xs text-neutral-500">{u.rol} · {u.email}</p>
+                <p className="text-xs text-musgo">{u.rol} · {u.email}</p>
               </div>
               <button
                 onClick={() => resetearPassword(u.id)}
-                className="rounded-md border border-neutral-300 px-3 py-1.5 text-xs font-medium"
+                className="rounded-md border border-piedra-osc px-3 py-1.5 text-xs font-medium"
               >
                 Resetear contraseña
               </button>

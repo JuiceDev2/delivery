@@ -53,13 +53,13 @@ export default function NuevoVendedorPage() {
   if (resultado) {
     return (
       <main className="mx-auto max-w-sm px-6 py-16">
-        <h1 className="text-xl font-semibold">Vendedor creado</h1>
-        <p className="mt-2 text-sm text-neutral-500">
+        <h1 className="font-display text-xl font-semibold text-agave-osc">Vendedor creado</h1>
+        <p className="mt-2 text-sm text-musgo">
           Comparte estos datos con el vendedor para que inicie sesión y cambie su contraseña.
         </p>
-        <div className="mt-4 space-y-1 rounded-lg border border-neutral-200 p-4 text-sm">
-          <p><span className="text-neutral-500">Correo:</span> {form.email}</p>
-          <p><span className="text-neutral-500">Contraseña temporal:</span> {resultado.passwordTemporal}</p>
+        <div className="mt-4 space-y-1 rounded-lg border border-piedra-osc/60 bg-white p-4 text-sm shadow-suave">
+          <p><span className="text-musgo">Correo:</span> {form.email}</p>
+          <p><span className="text-musgo">Contraseña temporal:</span> {resultado.passwordTemporal}</p>
         </div>
         <Link href="/admin" className="mt-6 inline-block text-sm underline">
           Volver al panel
@@ -70,24 +70,24 @@ export default function NuevoVendedorPage() {
 
   return (
     <main className="mx-auto max-w-sm px-6 py-10">
-      <h1 className="text-xl font-semibold">Nuevo vendedor</h1>
-      <p className="mt-1 text-sm text-neutral-500">
+      <h1 className="font-display text-xl font-semibold text-agave-osc">Nuevo vendedor</h1>
+      <p className="mt-1 text-sm text-musgo">
         Se crea la cuenta del vendedor y su negocio en un solo paso.
       </p>
 
       <form onSubmit={crear} className="mt-6 space-y-4">
         <div>
-          <p className="mb-2 text-xs font-medium text-neutral-500">DATOS DEL VENDEDOR</p>
+          <p className="mb-2 text-xs font-medium text-musgo">DATOS DEL VENDEDOR</p>
           <div className="space-y-3">
             <input
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
               placeholder="Nombre completo"
               value={form.nombreCompleto}
               onChange={(e) => setForm({ ...form, nombreCompleto: e.target.value })}
               required
             />
             <input
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
               placeholder="Teléfono"
               value={form.telefono}
               onChange={(e) => setForm({ ...form, telefono: e.target.value })}
@@ -95,7 +95,7 @@ export default function NuevoVendedorPage() {
             />
             <input
               type="email"
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
               placeholder="Correo"
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -105,17 +105,17 @@ export default function NuevoVendedorPage() {
         </div>
 
         <div>
-          <p className="mb-2 text-xs font-medium text-neutral-500">DATOS DEL NEGOCIO</p>
+          <p className="mb-2 text-xs font-medium text-musgo">DATOS DEL NEGOCIO</p>
           <div className="space-y-3">
             <input
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
               placeholder="Nombre del negocio"
               value={form.nombreNegocio}
               onChange={(e) => setForm({ ...form, nombreNegocio: e.target.value })}
               required
             />
             <select
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
               value={form.categoria}
               onChange={(e) => setForm({ ...form, categoria: e.target.value })}
             >
@@ -124,7 +124,7 @@ export default function NuevoVendedorPage() {
               <option value="otro">Otro</option>
             </select>
             <input
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
               placeholder="Dirección (referencia)"
               value={form.direccion}
               onChange={(e) => setForm({ ...form, direccion: e.target.value })}
@@ -132,23 +132,23 @@ export default function NuevoVendedorPage() {
             <button
               type="button"
               onClick={usarUbicacionActual}
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm font-medium"
+              className="w-full rounded-lg border border-piedra-osc px-4 py-2.5 text-sm font-medium text-agave-osc transition hover:bg-agave-claro"
             >
               {ubicacion ? "Ubicación del local capturada ✓" : "Usar mi ubicación actual"}
             </button>
-            <p className="text-xs text-neutral-400">
+            <p className="text-xs text-musgo/70">
               Úsalo si estás dado de alta desde el propio local; si no, puedes dejarlo y
               pedirle al vendedor que la actualice después.
             </p>
           </div>
         </div>
 
-        {error && <p className="text-sm text-red-600">{error}</p>}
+        {error && <p className="text-sm text-barro-osc">{error}</p>}
 
         <button
           type="submit"
           disabled={cargando}
-          className="w-full rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
+          className="w-full rounded-lg bg-agave transition hover:bg-agave-osc px-4 py-2.5 text-sm font-medium text-white disabled:opacity-50"
         >
           {cargando ? "Creando…" : "Crear vendedor"}
         </button>

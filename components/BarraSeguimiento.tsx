@@ -71,7 +71,7 @@ export default function BarraSeguimiento({
 
   return (
     <div className="w-full py-6">
-      <div className="relative h-1.5 w-full rounded-full bg-neutral-200">
+      <div className="relative h-1.5 w-full rounded-full bg-piedra-osc/60">
         <div
           className="absolute -top-3 -translate-x-1/2 text-2xl transition-all duration-1000 ease-out"
           style={{ left: `${porcentaje}%` }}
@@ -81,7 +81,7 @@ export default function BarraSeguimiento({
         </div>
         <div className="absolute -top-3 right-0 translate-x-1/2 text-2xl">🏠</div>
       </div>
-      <p className="mt-4 text-center text-sm text-neutral-500">
+      <p className="mt-4 text-center text-sm text-musgo">
         {porcentaje >= 100 ? "El repartidor ha llegado" : `${Math.round(porcentaje)}% del camino`}
       </p>
     </div>

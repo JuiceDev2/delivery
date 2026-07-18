@@ -42,7 +42,7 @@ export default function DetallePedidoPage() {
     };
   }, [id]);
 
-  if (!pedido) return <main className="p-10 text-sm text-neutral-500">Cargando…</main>;
+  if (!pedido) return <main className="p-10 text-sm text-musgo">Cargando…</main>;
 
   const ESTADOS: Record<string, string> = {
     pendiente: "Esperando confirmación",
@@ -55,8 +55,8 @@ export default function DetallePedidoPage() {
 
   return (
     <main className="mx-auto max-w-sm px-6 py-10">
-      <h1 className="text-xl font-semibold">Tu pedido</h1>
-      <p className="mt-1 text-sm text-neutral-500">{ESTADOS[pedido.estado]}</p>
+      <h1 className="font-display text-xl font-semibold text-agave-osc">Tu pedido</h1>
+      <p className="mt-1 text-sm text-musgo">{ESTADOS[pedido.estado]}</p>
       <p className="mt-4 text-sm font-semibold">Total: ${pedido.total.toFixed(2)}</p>
 
       {pedido.tipo_entrega === "domicilio" &&

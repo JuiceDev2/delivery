@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { crearClienteSupabase } from "@/lib/supabase/client";
@@ -82,21 +84,21 @@ export default function PedidosVendedorPage() {
   return (
     <main className="mx-auto max-w-2xl px-6 py-10">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Pedidos</h1>
-        <Link href="/vendedor/negocio" className="text-sm underline text-neutral-500">
+        <h1 className="font-display text-xl font-semibold text-agave-osc">Pedidos</h1>
+        <Link href="/vendedor/negocio" className="text-sm underline text-musgo">
           Estado del negocio
         </Link>
       </div>
 
       <ul className="mt-6 space-y-3">
         {pedidos.map((p) => (
-          <li key={p.id} className="rounded-lg border border-neutral-200 p-4">
+          <li key={p.id} className="rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium">
                   {p.cliente_nombre ?? "Cliente registrado"} · {p.tipo_entrega}
                 </p>
-                <p className="text-xs text-neutral-500">
+                <p className="text-xs text-musgo">
                   {p.estado} · ${p.total.toFixed(2)}
                 </p>
               </div>
@@ -104,7 +106,7 @@ export default function PedidosVendedorPage() {
                 {p.estado !== "error" && SIGUIENTE_ESTADO[p.estado] && (
                   <button
                     onClick={() => avanzarEstado(p)}
-                    className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white"
+                    className="rounded-md bg-agave transition hover:bg-agave-osc px-3 py-1.5 text-xs font-medium text-white"
                   >
                     Marcar {SIGUIENTE_ESTADO[p.estado]}
                   </button>
@@ -112,7 +114,7 @@ export default function PedidosVendedorPage() {
                 {p.estado !== "error" && (
                   <button
                     onClick={() => marcarError(p)}
-                    className="rounded-md border border-red-300 px-3 py-1.5 text-xs font-medium text-red-600"
+                    className="rounded-md border border-barro/50 px-3 py-1.5 text-xs font-medium text-barro-osc"
                   >
                     Error
                   </button>
@@ -125,7 +127,7 @@ export default function PedidosVendedorPage() {
                 <a
                   href={`https://www.google.com/maps?q=${p.lat_cliente},${p.lng_cliente}`}
                   target="_blank"
-                  className="text-xs text-neutral-500 underline"
+                  className="text-xs text-musgo underline"
                 >
                   Ver ubicación del cliente en Maps
                 </a>
@@ -135,7 +137,7 @@ export default function PedidosVendedorPage() {
           </li>
         ))}
         {pedidos.length === 0 && (
-          <p className="text-sm text-neutral-500">No hay pedidos pendientes.</p>
+          <p className="text-sm text-musgo">No hay pedidos pendientes.</p>
         )}
       </ul>
     </main>

@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import { crearClienteSupabase } from "@/lib/supabase/client";
 
@@ -73,18 +75,18 @@ export default function CajaPage() {
 
   return (
     <main className="mx-auto max-w-md px-6 py-10">
-      <h1 className="text-xl font-semibold">Caja</h1>
+      <h1 className="font-display text-xl font-semibold text-agave-osc">Caja</h1>
 
-      <ul className="mt-6 divide-y divide-neutral-200 rounded-lg border border-neutral-200">
+      <ul className="mt-6 divide-y divide-piedra-osc/60 rounded-lg border border-piedra-osc/60 bg-white shadow-suave">
         {productos.map((p) => (
           <li key={p.id} className="flex items-center justify-between px-4 py-3">
             <div>
               <p className="text-sm font-medium">{p.nombre}</p>
-              <p className="text-xs text-neutral-500">${p.precio.toFixed(2)}</p>
+              <p className="text-xs text-musgo">${p.precio.toFixed(2)}</p>
             </div>
             <button
               onClick={() => agregar(p)}
-              className="rounded-md bg-neutral-900 px-3 py-1.5 text-xs font-medium text-white"
+              className="rounded-md bg-agave transition hover:bg-agave-osc px-3 py-1.5 text-xs font-medium text-white"
             >
               Agregar
             </button>
@@ -93,14 +95,14 @@ export default function CajaPage() {
       </ul>
 
       {carrito.length > 0 && (
-        <div className="mt-6 space-y-3 rounded-lg border border-neutral-200 p-4">
+        <div className="mt-6 space-y-3 rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
           {carrito.map((l) => (
             <div key={l.id} className="flex justify-between text-sm">
               <span>{l.cantidad}× {l.nombre}</span>
               <span>${(l.precio * l.cantidad).toFixed(2)}</span>
             </div>
           ))}
-          <div className="flex justify-between border-t border-neutral-200 pt-3 text-sm font-semibold">
+          <div className="flex justify-between border-t border-piedra-osc/60 pt-3 text-sm font-semibold">
             <span>Total</span>
             <span>${total.toFixed(2)}</span>
           </div>
@@ -108,18 +110,18 @@ export default function CajaPage() {
           <input
             type="number"
             placeholder="Efectivo recibido"
-            className="w-full rounded-lg border border-neutral-300 px-4 py-2.5"
+            className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 outline-none focus:border-agave"
             value={efectivoRecibido}
             onChange={(e) => setEfectivoRecibido(e.target.value)}
           />
           {efectivoRecibido && (
-            <p className="text-sm text-neutral-600">Cambio: ${cambio.toFixed(2)}</p>
+            <p className="text-sm text-musgo">Cambio: ${cambio.toFixed(2)}</p>
           )}
 
           <button
             onClick={cobrar}
             disabled={Number(efectivoRecibido || 0) < total}
-            className="w-full rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white disabled:opacity-40"
+            className="w-full rounded-lg bg-agave transition hover:bg-agave-osc px-4 py-2.5 text-sm font-medium text-white disabled:opacity-40"
           >
             Cobrar
           </button>

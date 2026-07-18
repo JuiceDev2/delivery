@@ -1,5 +1,7 @@
 "use client";
 
+export const dynamic = "force-dynamic";
+
 import { useEffect, useState } from "react";
 import { crearClienteSupabase } from "@/lib/supabase/client";
 
@@ -98,18 +100,18 @@ export default function NegocioPage() {
     });
   }
 
-  if (!negocio) return <main className="p-10 text-sm text-neutral-500">Cargando…</main>;
+  if (!negocio) return <main className="p-10 text-sm text-musgo">Cargando…</main>;
 
   return (
     <main className="mx-auto max-w-sm px-6 py-10">
-      <h1 className="text-xl font-semibold">{negocio.nombre_negocio}</h1>
+      <h1 className="font-display text-xl font-semibold text-agave-osc">{negocio.nombre_negocio}</h1>
 
-      <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+      <section className="mt-6 rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
         <div className="flex items-center justify-between">
           <p className="text-sm font-medium">Estado</p>
           <span
             className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
-              negocio.abierto ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+              negocio.abierto ? "bg-agave-claro text-agave-osc" : "bg-barro/15 text-barro-osc"
             }`}
           >
             {negocio.abierto ? "Abierto" : "Cerrado"}
@@ -118,17 +120,17 @@ export default function NegocioPage() {
 
         {negocio.abierto ? (
           <div className="mt-4 space-y-3">
-            <p className="text-xs text-neutral-500">Cerrar hasta (opcional):</p>
+            <p className="text-xs text-musgo">Cerrar hasta (opcional):</p>
             <input
               type="datetime-local"
-              className="w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm"
+              className="w-full rounded-lg border border-piedra-osc bg-white px-4 py-2.5 text-sm outline-none focus:border-agave"
               value={cerradoHastaInput}
               onChange={(e) => setCerradoHastaInput(e.target.value)}
             />
             <button
               onClick={marcarCerrado}
               disabled={guardando}
-              className="w-full rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white"
+              className="w-full rounded-lg bg-agave transition hover:bg-agave-osc px-4 py-2.5 text-sm font-medium text-white"
             >
               Marcar como cerrado
             </button>
@@ -136,7 +138,7 @@ export default function NegocioPage() {
         ) : (
           <div className="mt-4 space-y-3">
             {negocio.cerrado_hasta && (
-              <p className="text-sm text-neutral-600">
+              <p className="text-sm text-musgo">
                 Cerrado hasta {new Date(negocio.cerrado_hasta).toLocaleString("es-MX", {
                   weekday: "short",
                   hour: "numeric",
@@ -146,12 +148,12 @@ export default function NegocioPage() {
             )}
             <button
               onClick={marcarAbierto}
-              className="w-full rounded-lg bg-neutral-900 px-4 py-2.5 text-sm font-medium text-white"
+              className="w-full rounded-lg bg-agave transition hover:bg-agave-osc px-4 py-2.5 text-sm font-medium text-white"
             >
               Marcar como abierto ahora
             </button>
 
-            <label className="flex items-start gap-2 rounded-lg border border-neutral-200 p-3 text-sm">
+            <label className="flex items-start gap-2 rounded-lg border border-piedra-osc/60 bg-white p-3 text-sm">
               <input
                 type="checkbox"
                 checked={negocio.acepta_pedidos_cerrado}
@@ -160,7 +162,7 @@ export default function NegocioPage() {
               />
               <span>
                 Seguir recibiendo pedidos aunque esté cerrado
-                <span className="block text-xs text-neutral-500">
+                <span className="block text-xs text-musgo">
                   Si lo activas, los clientes podrán pedir aunque marque "Cerrado".
                 </span>
               </span>
@@ -169,25 +171,25 @@ export default function NegocioPage() {
         )}
       </section>
 
-      <section className="mt-6 rounded-lg border border-neutral-200 p-4">
+      <section className="mt-6 rounded-lg border border-piedra-osc/60 bg-white p-4 shadow-suave">
         <p className="text-sm font-medium">Ubicación de la sucursal</p>
-        <p className="mt-1 text-xs text-neutral-500">
+        <p className="mt-1 text-xs text-musgo">
           Es la que verán los clientes que elijan pasar a recoger.
         </p>
         {negocio.lat && negocio.lng ? (
           <a
             href={`https://www.google.com/maps?q=${negocio.lat},${negocio.lng}`}
             target="_blank"
-            className="mt-2 block text-xs text-neutral-500 underline"
+            className="mt-2 block text-xs text-musgo underline"
           >
             Ver ubicación actual en Maps
           </a>
         ) : (
-          <p className="mt-2 text-xs text-neutral-400">Aún no la has configurado.</p>
+          <p className="mt-2 text-xs text-musgo/70">Aún no la has configurado.</p>
         )}
         <button
           onClick={usarUbicacionActual}
-          className="mt-3 w-full rounded-lg border border-neutral-300 px-4 py-2.5 text-sm font-medium"
+          className="mt-3 w-full rounded-lg border border-piedra-osc px-4 py-2.5 text-sm font-medium text-agave-osc transition hover:bg-agave-claro"
         >
           Actualizar con mi ubicación actual
         </button>

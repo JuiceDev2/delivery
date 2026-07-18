@@ -200,6 +200,19 @@ create policy "pedidos_update" on public.pedidos
     or negocio_id in (select id from public.negocios where vendedor_id = auth.uid())
   );
 
+-- pedido_items: mismo criterio que su pedido — cliente dueño, vendedor del negocio, o admin
+create policy "pedido_items_select" on public.pedido_items
+  for select using (
+    pedido_id in (
+      select id from public.pedidos
+      where cliente_id = auth.uid()
+         or negocio_id in (select id from public.negocios where vendedor_id = auth.uid())
+    )
+    or public.rol_actual() = 'admin'
+  );
+create policy "pedido_items_insert" on public.pedido_items
+  for insert with check (true); -- se crea junto con el pedido, incluye clientes no registrados
+
 -- ubicaciones_activas: cliente del pedido y vendedor del negocio pueden ver/actualizar
 create policy "ubicaciones_select" on public.ubicaciones_activas
   for select using (
@@ -228,6 +241,23 @@ create policy "ventas_caja_select" on public.ventas_caja
 create policy "ventas_caja_insert" on public.ventas_caja
   for insert with check (
     negocio_id in (select id from public.negocios where vendedor_id = auth.uid())
+  );
+
+-- ventas_caja_items: mismo criterio que su venta — solo el vendedor dueño y admin
+create policy "ventas_caja_items_select" on public.ventas_caja_items
+  for select using (
+    public.rol_actual() = 'admin'
+    or venta_id in (
+      select id from public.ventas_caja
+      where negocio_id in (select id from public.negocios where vendedor_id = auth.uid())
+    )
+  );
+create policy "ventas_caja_items_insert" on public.ventas_caja_items
+  for insert with check (
+    venta_id in (
+      select id from public.ventas_caja
+      where negocio_id in (select id from public.negocios where vendedor_id = auth.uid())
+    )
   );
 
 -- Habilitar Realtime en ubicaciones_activas y pedidos (para tracking en vivo y estado de pedido)
