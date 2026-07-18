@@ -43,34 +43,25 @@ export async function POST(request: NextRequest) {
   const admin = crearClienteSupabaseAdmin();
   const passwordTemporal = generarPasswordTemporal();
 
-  // 1. Crea la cuenta de autenticación
+  // 1. Crea la cuenta de autenticación. El perfil en public.usuarios lo crea
+  // automáticamente el trigger de la base de datos, usando estos metadatos
+  // (ver supabase/schema.sql), así que no hace falta insertarlo aquí también.
   const { data: nuevoUsuario, error: authError } = await admin.auth.admin.createUser({
     email,
     password: passwordTemporal,
     email_confirm: true,
+    user_metadata: {
+      rol: "vendedor",
+      nombre_completo: nombreCompleto,
+      telefono,
+    },
   });
 
   if (authError || !nuevoUsuario.user) {
     return NextResponse.json({ error: authError?.message ?? "No se pudo crear la cuenta" }, { status: 500 });
   }
 
-  // 2. Crea el perfil con rol "vendedor"
-  const { error: perfilError } = await admin.from("usuarios").insert({
-    id: nuevoUsuario.user.id,
-    rol: "vendedor",
-    nombre_completo: nombreCompleto,
-    telefono,
-    email,
-    es_registrado: true,
-  });
-
-  if (perfilError) {
-    // revierte la cuenta creada si falla el perfil, para no dejar usuarios huérfanos
-    await admin.auth.admin.deleteUser(nuevoUsuario.user.id);
-    return NextResponse.json({ error: perfilError.message }, { status: 500 });
-  }
-
-  // 3. Crea el negocio ligado a ese vendedor
+  // 2. Crea el negocio ligado a ese vendedor
   const { data: negocio, error: negocioError } = await admin
     .from("negocios")
     .insert({

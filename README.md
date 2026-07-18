@@ -56,10 +56,18 @@
 3. Si ya habías corrido `supabase/schema.sql` antes de la función de horario, corre también
    `supabase/migracion_horario.sql` para agregar las columnas nuevas a `negocios`.
 4. Si ya tenías el proyecto corriendo antes de esta actualización, corre también
-   `supabase/migracion_rls_items.sql`: agrega las políticas de Row Level Security que
-   faltaban en `pedido_items` y `ventas_caja_items` (esas tablas tenían RLS activado pero
-   sin ninguna política, lo que bloqueaba silenciosamente el checkout y la caja). Los
-   proyectos nuevos que corran `supabase/schema.sql` ya la incluyen.
+   `supabase/migracion_rls_items.sql` y `supabase/migracion_registro.sql`:
+   - `migracion_rls_items.sql` agrega las políticas de Row Level Security que faltaban en
+     `pedido_items` y `ventas_caja_items`.
+   - `migracion_registro.sql` arregla el registro de clientes desde `/registro`, que estaba
+     roto porque `usuarios` tenía RLS sin política de `insert` (y de todos modos habría
+     fallado con la confirmación de correo activada, porque en ese momento aún no hay
+     sesión). Ahora un trigger crea el perfil automáticamente al crearse la cuenta.
+   Los proyectos nuevos que corran `supabase/schema.sql` ya incluyen ambas correcciones.
+5. En Supabase, ve a **Authentication → Providers → Email** y revisa si "Confirm email"
+   está activado. Si lo está, después de registrarse el usuario debe abrir el enlace de
+   su correo antes de poder iniciar sesión (la app ya muestra ese aviso). Si prefieres que
+   entren directo sin confirmar, desactívalo ahí.
 
 ## Diseño
 

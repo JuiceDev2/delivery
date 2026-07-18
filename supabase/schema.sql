@@ -137,6 +137,41 @@ create index idx_pedidos_cliente on public.pedidos(cliente_id);
 create index idx_pedidos_estado on public.pedidos(estado);
 create index idx_pedido_items_pedido on public.pedido_items(pedido_id);
 
+-- ------------------------------------------------------------
+-- TRIGGER: crea automáticamente el perfil en public.usuarios
+-- cuando se crea la cuenta en auth.users (por signUp del cliente
+-- o por admin.createUser del panel admin). Corre con permisos de
+-- superusuario (security definer), así que no depende de RLS ni
+-- de que ya exista una sesión activa (funciona aunque el proyecto
+-- tenga activada la confirmación de correo).
+-- ------------------------------------------------------------
+create or replace function public.manejar_nuevo_usuario()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.usuarios (id, rol, nombre_completo, telefono, email, es_registrado, lat, lng)
+  values (
+    new.id,
+    coalesce(new.raw_user_meta_data->>'rol', 'cliente'),
+    coalesce(new.raw_user_meta_data->>'nombre_completo', ''),
+    coalesce(new.raw_user_meta_data->>'telefono', ''),
+    new.email,
+    true,
+    nullif(new.raw_user_meta_data->>'lat', '')::numeric,
+    nullif(new.raw_user_meta_data->>'lng', '')::numeric
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+drop trigger if exists trigger_nuevo_usuario on auth.users;
+create trigger trigger_nuevo_usuario
+  after insert on auth.users
+  for each row execute function public.manejar_nuevo_usuario();
+
 -- ============================================================
 -- ROW LEVEL SECURITY
 -- ============================================================
@@ -164,6 +199,8 @@ create policy "usuarios_select" on public.usuarios
   for select using (id = auth.uid() or public.rol_actual() = 'admin');
 create policy "usuarios_update_propio" on public.usuarios
   for update using (id = auth.uid() or public.rol_actual() = 'admin');
+create policy "usuarios_insert_propio" on public.usuarios
+  for insert with check (id = auth.uid());
 
 -- negocios: público puede ver negocios activos (catálogo); vendedor gestiona el suyo; admin todo
 create policy "negocios_select_publico" on public.negocios

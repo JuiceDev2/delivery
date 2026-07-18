@@ -16,6 +16,7 @@ export default function RegistroPage() {
   const [ubicacion, setUbicacion] = useState<{ lat: number; lng: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [cargando, setCargando] = useState(false);
+  const [confirmarCorreo, setConfirmarCorreo] = useState(false);
 
   function pedirUbicacion() {
     setError(null);
@@ -38,6 +39,14 @@ export default function RegistroPage() {
     const { data: authData, error: authError } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          nombre_completo: nombre,
+          telefono,
+          lat: ubicacion.lat,
+          lng: ubicacion.lng,
+        },
+      },
     });
 
     if (authError || !authData.user) {
@@ -46,24 +55,30 @@ export default function RegistroPage() {
       return;
     }
 
-    const { error: perfilError } = await supabase.from("usuarios").insert({
-      id: authData.user.id,
-      rol: "cliente",
-      nombre_completo: nombre,
-      telefono,
-      email,
-      es_registrado: true,
-      lat: ubicacion.lat,
-      lng: ubicacion.lng,
-    });
+    // El perfil en public.usuarios lo crea un trigger en la base de datos
+    // al insertarse la cuenta en auth.users (ver supabase/schema.sql).
 
-    if (perfilError) {
-      setError(perfilError.message);
+    if (!authData.session) {
+      // El proyecto de Supabase tiene activada la confirmación por correo:
+      // la cuenta ya existe, pero todavía no hay sesión activa.
       setCargando(false);
+      setConfirmarCorreo(true);
       return;
     }
 
     router.push("/cliente/catalogo");
+  }
+
+  if (confirmarCorreo) {
+    return (
+      <main className="mx-auto max-w-sm px-6 py-16 text-center">
+        <h1 className="font-display text-xl font-semibold text-agave-osc">Revisa tu correo</h1>
+        <p className="mt-2 text-sm text-musgo">
+          Te enviamos un enlace de confirmación a <strong>{email}</strong>. Ábrelo para
+          activar tu cuenta y luego inicia sesión.
+        </p>
+      </main>
+    );
   }
 
   return (
